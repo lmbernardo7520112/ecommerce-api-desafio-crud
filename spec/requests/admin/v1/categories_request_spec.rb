@@ -52,7 +52,7 @@ RSpec.describe "Admin V1 Categories", type: :request do
     
       it 'does not add a new Category' do
         expect do
-          post url, headers: auth_header(user), params: category_invalid_params
+        post url, headers: auth_header(user), params: category_invalid_params
         end.to_not change(Category, :count)
       end
     
