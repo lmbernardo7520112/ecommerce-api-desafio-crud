@@ -7,11 +7,13 @@ module Admin::V1
         def create
           @category = Category.new
           @category.attributes = category_params
+          save_category!
+        end
 
-          @category.save!
-            render :show
-        rescue
-            render json: { errors: { fields: @category.errors.messages } }, status: :unprocessable_entity
+        def update
+          @category = Category.find(params[:id])
+          @category.attributes = category_params
+          save_category!
         end
 
         private
@@ -20,5 +22,12 @@ module Admin::V1
               return {} unless params.has_key?(:category)
               params.require(:category).permit(:id, :name)
           end
+
+          def save_category!
+            @category.save!
+            render :show
+          rescue
+            render_error(field :@category.errors.messages)
+          end
+        end
       end
-  end
